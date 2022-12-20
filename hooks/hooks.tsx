@@ -1,9 +1,13 @@
 export const useGetLocalStorage = (key: string) => {
     if (typeof window !== "undefined") {
-        const { decycle } = require("json-cyclic");
+        const { decycle, encycle } = require("json-cyclic");
 
         const test = localStorage.getItem(key);
         console.log(test);
-        return test != null ? JSON.stringify(decycle(test)) : undefined;
+        if (test !== null) {
+            console.log(JSON.stringify(encycle(test)));
+        }
+        console.log("==================================");
+        return test != null ? JSON.parse(encycle(test)) : undefined;
     }
 };

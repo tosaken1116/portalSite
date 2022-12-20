@@ -14,7 +14,7 @@ export default function AddLinkModal({
         color: "",
         icon: null,
     });
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
         const value =
             target.type === "checkbox" ? target.checked : target.value;
