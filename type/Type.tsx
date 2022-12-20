@@ -15,3 +15,14 @@ export type sortProps = {
     removeIndex: number;
     addedIndex: number;
 };
+export type FormDataType = {
+    category: string;
+    title: string;
+    link: string;
+    color: string;
+    icon: HTMLElement | null;
+};
+export type AddLinkModalProps = {
+    closeModal: () => void;
+    handleSubmit: (formData: FormDataType) => void;
+};
