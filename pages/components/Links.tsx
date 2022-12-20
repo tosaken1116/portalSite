@@ -6,6 +6,7 @@ const Links = ({ links, title }: LinksProps) => {
     return (
         <Stack
             p={2}
+            m={2}
             sx={{
                 width: "300px",
                 border: "2px solid #aaaaaa",

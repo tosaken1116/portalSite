@@ -1,3 +1,4 @@
+import AddLinkIcon from "@mui/icons-material/AddLink";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import CloudIcon from "@mui/icons-material/Cloud";
@@ -8,12 +9,17 @@ import LiveTvIcon from "@mui/icons-material/LiveTv";
 import SchoolIcon from "@mui/icons-material/School";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import { Grid, Stack } from "@mui/material";
-import { useState } from "react";
+import { Grid, IconButton, Stack } from "@mui/material";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { LinksProps } from "../type/Type";
+import { useGetLocalStorage } from "../hooks/hooks";
+import { FormDataType, LinksProps } from "../type/Type";
+import AddLinkModal from "./components/AddLinkModal";
 import LinksWrapper from "./components/Links";
+
 export default function Home() {
+    const router = useRouter();
     const arrayMove = (result: any) => {
         const items = [...LinkProps];
         const deleteItem = items.splice(result.source.index, 1);
@@ -110,53 +116,122 @@ export default function Home() {
             ],
         },
     ];
+    const { decycle, encycle } = require("json-cyclic");
+
+    const handleSubmit = (formData: FormDataType) => {
+        const addData = LinkProps.concat();
+        let foundFlag = false;
+        addData.map((LinkProp, index) => {
+            if (LinkProp.title == formData.category) {
+                const addColumn = LinkProp;
+                addData.splice(index, 1);
+                addColumn.links.push({
+                    href: formData.link,
+                    title: formData.title,
+                    icon: formData.icon,
+                    color: formData.color,
+                });
+                setLinkProps([...addData, addColumn]);
+                console.log("found");
+                foundFlag = true;
+            }
+        });
+        if (!foundFlag) {
+            console.log("not found");
+            setLinkProps([
+                ...addData,
+                {
+                    title: formData.category,
+                    links: [
+                        {
+                            title: formData.title,
+                            href: formData.link,
+                            icon: formData.icon,
+                            color: formData.color,
+                        },
+                    ],
+                },
+            ]);
+            foundFlag = false;
+        }
+    };
     const [LinkProps, setLinkProps] = useState<LinksProps[]>(initialProps);
+    const test = useGetLocalStorage("portalSite");
+    if (test !== undefined) {
+        setLinkProps(test);
+    }
+    const saveLocalStorage = (saveData: any, saveKey: string) => {
+        console.log(saveData);
+        console.log(saveKey);
+        console.log(encycle(saveData));
+        localStorage.setItem(saveKey, JSON.stringify(encycle(saveData)));
+    };
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    useEffect(() => {
+        router.events.on("routeChangeStart", saveLocalStorage);
+        return () => {
+            router.events.off("routeChangeStart", saveLocalStorage);
+        };
+    }, []);
     return (
-        // <Stack alignItems="center" spacing={1}>
-        <Grid
-            alignItems="center"
-            justifyContent="center"
-            container
-            p={3}
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-        >
-            <DragDropContext onDragEnd={arrayMove}>
-                <Droppable droppableId="droppableId">
-                    {(provided) => (
-                        <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                        >
-                            {LinkProps.map(({ title, links }, index) => {
-                                return (
-                                    <Draggable
-                                        key={title}
-                                        draggableId={title}
-                                        index={index}
-                                    >
-                                        {(provided) => (
-                                            <Grid item xs={2} sm={4} md={4}>
-                                                <Stack
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                >
-                                                    <LinksWrapper
-                                                        links={links}
-                                                        title={title}
-                                                    ></LinksWrapper>
-                                                </Stack>
-                                            </Grid>
-                                        )}
-                                    </Draggable>
-                                );
-                            })}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
-        </Grid>
+        <Stack alignItems="center" spacing={1}>
+            <IconButton
+                onClick={() => setModalIsOpen(true)}
+                sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: { xs: "24px", sm: "36px" },
+                }}
+            >
+                <AddLinkIcon />
+            </IconButton>
+            {modalIsOpen && (
+                <AddLinkModal
+                    closeModal={() => setModalIsOpen(false)}
+                    handleSubmit={handleSubmit}
+                ></AddLinkModal>
+            )}
+
+            <Grid alignItems="center" justifyContent="center" container p={3}>
+                <DragDropContext onDragEnd={arrayMove}>
+                    <Droppable droppableId="droppableId">
+                        {(provided) => (
+                            <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                            >
+                                {LinkProps.map(({ title, links }, index) => {
+                                    return (
+                                        <Draggable
+                                            key={title}
+                                            draggableId={title}
+                                            index={index}
+                                        >
+                                            {(provided) => (
+                                                <Grid item xs={2} sm={4} md={4}>
+                                                    <Stack
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        <LinksWrapper
+                                                            links={links}
+                                                            title={title}
+                                                        ></LinksWrapper>
+                                                    </Stack>
+                                                </Grid>
+                                            )}
+                                        </Draggable>
+                                    );
+                                })}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </Grid>
+        </Stack>
     );
 }
