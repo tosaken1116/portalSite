@@ -1,25 +1,50 @@
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, IconButton, Modal, Stack, TextField } from "@mui/material";
-import { useState } from "react";
+import CloudIcon from "@mui/icons-material/Cloud";
+import DescriptionIcon from "@mui/icons-material/Description";
+import ImageIcon from "@mui/icons-material/Image";
+import LinkIcon from "@mui/icons-material/Link";
+import LiveTvIcon from "@mui/icons-material/LiveTv";
+import {
+    Box,
+    Button,
+    IconButton,
+    Modal,
+    Stack,
+    TextField,
+} from "@mui/material";
+import { ReactNode, useState } from "react";
 import { AddLinkModalProps, FormDataType } from "../../type/Type";
 export default function AddLinkModal({
     closeModal,
     handleSubmit,
 }: AddLinkModalProps) {
-    const [formData, setFormData] = useState<FormDataType>({
+    const [selectedIcon, setSelectedIcon] = useState<ReactNode>(<LiveTvIcon />);
+    const initialFormData = {
         category: "",
         title: "",
         link: "",
         color: "",
-        icon: null,
-    });
+        icon: selectedIcon,
+    };
+    const [formData, setFormData] = useState<FormDataType>(initialFormData);
+    const checkSubmit = () => {
+        if (formData === initialFormData) {
+            return;
+        }
+        closeModal();
+        handleSubmit(formData);
+    };
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
         const value =
             target.type === "checkbox" ? target.checked : target.value;
         const name = target.name;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleIconChange = (icon: ReactNode) => {
+        setSelectedIcon(icon);
     };
     return (
         <Modal
@@ -76,15 +101,44 @@ export default function AddLinkModal({
                         value={formData.color}
                         onChange={handleChange}
                     />
-                    <TextField
-                        required
-                        label="icon"
-                        name="icon"
-                        value={formData.icon}
-                        onChange={handleChange}
-                    />
+
+                    <Stack direction="row">
+                        <IconButton
+                            onClick={() => handleIconChange(<LiveTvIcon />)}
+                        >
+                            <LiveTvIcon />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => handleIconChange(<LinkIcon />)}
+                        >
+                            <LinkIcon />
+                        </IconButton>
+                        <IconButton
+                            onClick={() =>
+                                handleIconChange(<DescriptionIcon />)
+                            }
+                        >
+                            <DescriptionIcon />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => handleIconChange(<ImageIcon />)}
+                        >
+                            <ImageIcon />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => handleIconChange(<CloudIcon />)}
+                        >
+                            <CloudIcon />
+                        </IconButton>
+                    </Stack>
+                    <Button
+                        startIcon={selectedIcon}
+                        sx={{ color: formData.color }}
+                    >
+                        {formData.title}
+                    </Button>
                     <IconButton
-                        onClick={() => handleSubmit(formData)}
+                        onClick={() => checkSubmit()}
                         sx={{
                             border: "2px solid #eeeeee",
                             alignSelf: "center",

@@ -194,14 +194,7 @@ export default function Home() {
                 ></AddLinkModal>
             )}
 
-            <Grid
-                alignItems="center"
-                justifyContent="center"
-                container
-                p={3}
-                spacing={{ xs: 2, md: 3 }}
-                columns={{ xs: 4, sm: 8, md: 12 }}
-            >
+            <Grid alignItems="center" justifyContent="center" container p={3}>
                 <DragDropContext onDragEnd={arrayMove}>
                     <Droppable droppableId="droppableId">
                         {(provided) => (
