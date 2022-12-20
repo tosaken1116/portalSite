@@ -22,7 +22,7 @@ export type FormDataType = {
     title: string;
     link: string;
     color: string;
-    icon: ReactNode;
+    icon: string;
 };
 export type AddLinkModalProps = {
     closeModal: () => void;
