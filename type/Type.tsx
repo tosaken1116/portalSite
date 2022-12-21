@@ -29,3 +29,8 @@ export type AddLinkModalProps = {
 export type IconTypeProps = {
     iconName: string;
 };
+
+export type ChangeColorProps = {
+    selectedColor: string;
+    handleColorChange: (color: any) => void;
+};

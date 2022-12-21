@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { AddLinkModalProps, FormDataType } from "../../type/Type";
+import ColorPickerModal from "./ColorPickerModal";
 import Icon from "./Icon";
 export default function AddLinkModal({
     closeModal,
@@ -27,6 +28,12 @@ export default function AddLinkModal({
         link: "",
         color: "",
         icon: selectedIcon,
+    };
+    const [selectedColor, setSelectedColor] = useState("#000000");
+
+    const handleColorChange = (color: any) => {
+        setSelectedColor(color.hex);
+        setFormData({ ...formData, color: selectedColor });
     };
     const [formData, setFormData] = useState<FormDataType>(initialFormData);
     const checkSubmit = () => {
@@ -96,14 +103,20 @@ export default function AddLinkModal({
                         value={formData.link}
                         onChange={handleChange}
                     />
-                    <TextField
-                        required
-                        label="color"
-                        name="color"
-                        value={formData.color}
-                        onChange={handleChange}
-                    />
-
+                    <Stack sx={{ position: "relative" }}>
+                        <TextField
+                            required
+                            label="color"
+                            name="color"
+                            value={formData.color}
+                            onChange={handleChange}
+                        />
+                        <ColorPickerModal
+                            selectedColor={selectedColor}
+                            handleColorChange={handleColorChange}
+                        ></ColorPickerModal>
+                    </Stack>
+                    <Box sx={{ backgroundColor: "white" }}></Box>
                     <Stack direction="row">
                         <IconButton onClick={() => handleIconChange("liveTV")}>
                             <LiveTvIcon />
@@ -131,6 +144,7 @@ export default function AddLinkModal({
                     >
                         {formData.title}
                     </Button>
+
                     <IconButton
                         onClick={() => checkSubmit()}
                         sx={{
