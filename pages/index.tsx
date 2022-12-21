@@ -1,6 +1,6 @@
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import { CircularProgress, Grid, IconButton, Stack } from "@mui/material";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useGetLocalStorage } from "../hooks/hooks";
 import { FormDataType, LinksProps } from "../type/Type";
@@ -85,14 +85,15 @@ export default function Home() {
         }
         saveLocalStorage();
     };
-    const [LinkProps, setLinkProps] = useState<LinksProps[]>();
+    const [LinkProps, setLinkProps] = useState<LinksProps[]>([]);
     const saveLocalStorage = () => {
         localStorage.setItem("portalSite", parseDict());
     };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    useLayoutEffect(() => {
-        setLinkProps(useGetLocalStorage("portalSite"));
+    const localStorageLinks = useGetLocalStorage("portalSite");
+    useEffect(() => {
+        setLinkProps(localStorageLinks);
     }, []);
     if (LinkProps == undefined) {
         return <CircularProgress />;
