@@ -1,8 +1,6 @@
-import { ReactNode } from "react";
-
 export type LinkProps = {
     href: string;
-    icon: ReactNode;
+    icon: string;
     title: string;
     color: string;
 };
@@ -22,9 +20,12 @@ export type FormDataType = {
     title: string;
     link: string;
     color: string;
-    icon: ReactNode;
+    icon: string;
 };
 export type AddLinkModalProps = {
     closeModal: () => void;
     handleSubmit: (formData: FormDataType) => void;
+};
+export type IconTypeProps = {
+    iconName: string;
 };
