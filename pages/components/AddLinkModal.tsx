@@ -46,6 +46,7 @@ export default function AddLinkModal({
 
     const handleIconChange = (icon: string) => {
         setSelectedIcon(icon);
+        setFormData({ ...formData, icon: icon });
     };
     return (
         <Modal
