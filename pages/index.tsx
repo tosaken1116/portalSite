@@ -11,9 +11,8 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { Grid, IconButton, Stack } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useGetLocalStorage } from "../hooks/hooks";
 import { FormDataType, LinksProps } from "../type/Type";
 import AddLinkModal from "./components/AddLinkModal";
 import LinksWrapper from "./components/Links";
@@ -27,7 +26,35 @@ export default function Home() {
 
         setLinkProps(items);
     };
-
+    const parseDict = () => {
+        let text = "[";
+        text += "";
+        LinkProps.map((LinkProp) => {
+            text +=
+                '{"title":"' +
+                LinkProp.title +
+                '","links":[' +
+                LinkProp.links.map((link) => {
+                    let linkText =
+                        "{" +
+                        '"title":"' +
+                        link.title +
+                        '","href":"' +
+                        link.href +
+                        '","icon":"' +
+                        link.icon +
+                        '","color":"' +
+                        link.color +
+                        '",';
+                    return linkText.slice(0, -1) + "}";
+                });
+            +"}";
+        });
+        text += "]";
+        console.log(text);
+        const textParse = JSON.parse(text);
+        console.log(textParse);
+    };
     const initialProps = [
         {
             title: "動画共有サービス",
@@ -116,6 +143,8 @@ export default function Home() {
             ],
         },
     ];
+    const testText =
+        '[{"title": "動画共有サービス","links":[{"title": "youtube","href": "https://youtube.com","icon": "<YouTubeIcon></YouTubeIcon>","color":"error"}]}]';
     const { decycle, encycle } = require("json-cyclic");
 
     const handleSubmit = (formData: FormDataType) => {
@@ -156,24 +185,32 @@ export default function Home() {
         }
     };
     const [LinkProps, setLinkProps] = useState<LinksProps[]>(initialProps);
-    const test = useGetLocalStorage("portalSite");
-    if (test !== undefined) {
-        setLinkProps(test);
-    }
-    const saveLocalStorage = (saveData: any, saveKey: string) => {
-        console.log(saveData);
-        console.log(saveKey);
-        console.log(encycle(saveData));
-        localStorage.setItem(saveKey, JSON.stringify(encycle(saveData)));
+    // const test = useGetLocalStorage("portalSite");
+    // if (test !== undefined) {
+    //     setLinkProps(test);
+    // }
+    const saveLocalStorage = () => {
+        parseDict();
+        const testjson = JSON.parse(testText);
+        console.log(testjson);
+        //   console.log(LinkProps);
+        //   console.log("portalSite");
+        //   console.log(encycle(LinkProps));
+        // localStorage.setItem("portalSite", JSON.stringify(LinkProps));
+        // document.cookie = "portalSite=" + LinkProps;
+        console.log(LinkProps.toString());
+        console.log(JSON.stringify(encycle(LinkProps)));
+        localStorage.setItem("portalSite", JSON.stringify(LinkProps));
+        // localStorage.setItem("portalSite", JSON.stringify(encycle(LinkProps)));
     };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    useEffect(() => {
-        router.events.on("routeChangeStart", saveLocalStorage);
-        return () => {
-            router.events.off("routeChangeStart", saveLocalStorage);
-        };
-    }, []);
+    // useEffect(() => {
+    //     router.events.on("routeChangeStart", saveLocalStorage);
+    //     return () => {
+    //         router.events.off("routeChangeStart", saveLocalStorage);
+    //     };
+    // }, []);
     return (
         <Stack alignItems="center" spacing={1}>
             <IconButton
@@ -181,6 +218,17 @@ export default function Home() {
                 sx={{
                     position: "absolute",
                     top: 0,
+                    left: 0,
+                    width: { xs: "24px", sm: "36px" },
+                }}
+            >
+                <AddLinkIcon />
+            </IconButton>
+            <IconButton
+                onClick={() => saveLocalStorage()}
+                sx={{
+                    position: "absolute",
+                    top: 12,
                     left: 0,
                     width: { xs: "24px", sm: "36px" },
                 }}
