@@ -15,18 +15,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { AddLinkModalProps, FormDataType } from "../../type/Type";
+import Icon from "./Icon";
 export default function AddLinkModal({
     closeModal,
     handleSubmit,
 }: AddLinkModalProps) {
-    const iconDict = {
-        LiveTvIcon: <LiveTvIcon />,
-        LinkIcon: <LinkIcon />,
-        CloudIcon: <CloudIcon />,
-        DescriptionIcon: <DescriptionIcon />,
-        ImageIcon: <ImageIcon />,
-    };
-    const [selectedIcon, setSelectedIcon] = useState<string>("LiveTvIcon");
+    const [selectedIcon, setSelectedIcon] = useState<string>("liveTV");
     const initialFormData = {
         category: "",
         title: "",
@@ -52,7 +46,6 @@ export default function AddLinkModal({
 
     const handleIconChange = (icon: string) => {
         setSelectedIcon(icon);
-        console.log(iconDict[selectedIcon]);
     };
     return (
         <Modal
@@ -111,34 +104,28 @@ export default function AddLinkModal({
                     />
 
                     <Stack direction="row">
-                        <IconButton
-                            onClick={() => handleIconChange("LiveTvIcon")}
-                        >
+                        <IconButton onClick={() => handleIconChange("liveTV")}>
                             <LiveTvIcon />
                         </IconButton>
-                        <IconButton
-                            onClick={() => handleIconChange("LinkIcon")}
-                        >
+                        <IconButton onClick={() => handleIconChange("link")}>
                             <LinkIcon />
                         </IconButton>
                         <IconButton
-                            onClick={() => handleIconChange("DescriptionIcon")}
+                            onClick={() => handleIconChange("description")}
                         >
                             <DescriptionIcon />
                         </IconButton>
                         <IconButton
-                            onClick={() => handleIconChange("ImageIcon")}
+                            onClick={() => handleIconChange("insertPhoto")}
                         >
                             <ImageIcon />
                         </IconButton>
-                        <IconButton
-                            onClick={() => handleIconChange("CloudIcon")}
-                        >
+                        <IconButton onClick={() => handleIconChange("cloud")}>
                             <CloudIcon />
                         </IconButton>
                     </Stack>
                     <Button
-                        startIcon={iconDict[selectedIcon]}
+                        startIcon={<Icon iconName={selectedIcon} />}
                         sx={{ color: formData.color }}
                     >
                         {formData.title}

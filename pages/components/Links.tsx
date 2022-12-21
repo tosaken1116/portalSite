@@ -1,6 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { LinksProps } from "../../type/Type";
+import Icon from "./Icon";
 
 const Links = ({ links, title }: LinksProps) => {
     return (
@@ -19,7 +20,7 @@ const Links = ({ links, title }: LinksProps) => {
                 links.map((link, index) => (
                     <Stack key={index} spacing={1}>
                         <Button
-                            startIcon={link.icon}
+                            startIcon={<Icon iconName={link.icon} />}
                             sx={{ color: link.color }}
                         >
                             <Link href={link.href}>{link.title}</Link>
