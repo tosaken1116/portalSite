@@ -3,6 +3,7 @@ export type LinkProps = {
     icon: string;
     title: string;
     color: string;
+    hidden: true;
 };
 export type LinksProps = {
     title: string;

@@ -1,10 +1,10 @@
-import AddLinkIcon from "@mui/icons-material/AddLink";
-import { CircularProgress, Grid, IconButton, Stack } from "@mui/material";
+import { CircularProgress, Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useGetLocalStorage } from "../hooks/hooks";
 import { FormDataType, LinksProps } from "../type/Type";
 import AddLinkModal from "./components/AddLinkModal";
+import EditButtons from "./components/EditButtons";
 import LinksWrapper from "./components/Links";
 
 export default function Home() {
@@ -59,6 +59,7 @@ export default function Home() {
                     title: formData.title,
                     icon: formData.icon,
                     color: formData.color,
+                    hidden: true,
                 });
                 setLinkProps([...addData, addColumn]);
                 console.log("found");
@@ -77,6 +78,7 @@ export default function Home() {
                             href: formData.link,
                             icon: formData.icon,
                             color: formData.color,
+                            hidden: true,
                         },
                     ],
                 },
@@ -99,18 +101,12 @@ export default function Home() {
         return <CircularProgress />;
     } else {
         return (
-            <Stack alignItems="center" spacing={1}>
-                <IconButton
-                    onClick={() => setModalIsOpen(true)}
-                    sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: { xs: "24px", sm: "36px" },
-                    }}
-                >
-                    <AddLinkIcon />
-                </IconButton>
+            <Stack
+                alignItems="center"
+                spacing={1}
+                sx={{ position: "relative" }}
+            >
+                <EditButtons />
 
                 {modalIsOpen && (
                     <AddLinkModal

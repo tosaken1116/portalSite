@@ -90,7 +90,15 @@ export const useGetLocalStorage = (key: string) => {
         ];
         const test = localStorage.getItem(key);
         console.log(test);
-
-        return test != null ? JSON.parse(test) : initialProps;
+        try {
+            if (test != null) {
+                const parsedValue = JSON.parse(test);
+                return parsedValue;
+            }
+        } catch (error) {
+            console.log(error);
+            return initialProps;
+        }
+        // return test != null ? JSON.parse(test) : initialProps;
     }
 };
