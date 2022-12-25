@@ -59,7 +59,6 @@ export default function Home() {
                     title: formData.title,
                     icon: formData.icon,
                     color: formData.color,
-                    hidden: true,
                 });
                 setLinkProps([...addData, addColumn]);
                 console.log("found");
@@ -78,7 +77,6 @@ export default function Home() {
                             href: formData.link,
                             icon: formData.icon,
                             color: formData.color,
-                            hidden: true,
                         },
                     ],
                 },
@@ -91,7 +89,7 @@ export default function Home() {
     const saveLocalStorage = () => {
         localStorage.setItem("portalSite", parseDict());
     };
-
+    const [isRemoveMode, setIsRemoveMode] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const localStorageLinks = useGetLocalStorage("portalSite");
     useEffect(() => {
@@ -106,7 +104,10 @@ export default function Home() {
                 spacing={1}
                 sx={{ position: "relative" }}
             >
-                <EditButtons />
+                <EditButtons
+                    addLink={() => setModalIsOpen(true)}
+                    removeLink={() => setIsRemoveMode(!isRemoveMode)}
+                />
 
                 {modalIsOpen && (
                     <AddLinkModal
@@ -153,6 +154,9 @@ export default function Home() {
                                                                 <LinksWrapper
                                                                     links={
                                                                         links
+                                                                    }
+                                                                    isRemoveMode={
+                                                                        isRemoveMode
                                                                     }
                                                                     title={
                                                                         title

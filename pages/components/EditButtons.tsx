@@ -3,7 +3,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import LinkOffSharpIcon from "@mui/icons-material/LinkOffSharp";
 import { Box, IconButton, Stack } from "@mui/material";
 import { useState } from "react";
-export default function EditButtons() {
+import { EditButtonsProps } from "../../type/Type";
+export default function EditButtons({ addLink, removeLink }: EditButtonsProps) {
     const [isEditButtonsOpen, setIsEditButtonsOpen] = useState(false);
     return (
         <Box sx={{ position: "absolute", left: "50px" }}>
@@ -17,10 +18,10 @@ export default function EditButtons() {
             </IconButton>
             {isEditButtonsOpen ? (
                 <Stack>
-                    <IconButton>
+                    <IconButton onClick={() => addLink()}>
                         <AddLinkIcon />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={removeLink}>
                         <LinkOffSharpIcon />
                     </IconButton>
                 </Stack>

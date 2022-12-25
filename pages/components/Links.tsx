@@ -1,10 +1,14 @@
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Button, IconButton, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import { LinksProps } from "../../type/Type";
+import { LinksProps, RemoveModeProps } from "../../type/Type";
 import Icon from "./Icon";
 
-const Links = ({ links, title }: LinksProps) => {
+const Links = ({
+    links,
+    title,
+    isRemoveMode,
+}: LinksProps & RemoveModeProps) => {
     return (
         <Stack
             p={2}
@@ -31,9 +35,9 @@ const Links = ({ links, title }: LinksProps) => {
                         >
                             <Link href={link.href}>{link.title}</Link>
                         </Button>
-                        {!link.hidden && (
+                        {isRemoveMode && (
                             <IconButton>
-                                <CancelIcon />
+                                <CancelIcon color="error" fontSize="small" />
                             </IconButton>
                         )}
                     </Stack>
@@ -42,6 +46,12 @@ const Links = ({ links, title }: LinksProps) => {
     );
 };
 
-export default function LinksWrapper({ links, title }: LinksProps) {
-    return <Links links={links} title={title}></Links>;
+export default function LinksWrapper({
+    links,
+    title,
+    isRemoveMode,
+}: LinksProps & RemoveModeProps) {
+    return (
+        <Links links={links} title={title} isRemoveMode={isRemoveMode}></Links>
+    );
 }

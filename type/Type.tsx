@@ -3,7 +3,6 @@ export type LinkProps = {
     icon: string;
     title: string;
     color: string;
-    hidden: true;
 };
 export type LinksProps = {
     title: string;
@@ -34,4 +33,11 @@ export type IconTypeProps = {
 export type ChangeColorProps = {
     selectedColor: string;
     handleColorChange: (color: any) => void;
+};
+export type RemoveModeProps = {
+    isRemoveMode: boolean;
+};
+export type EditButtonsProps = {
+    addLink: () => void;
+    removeLink: () => void;
 };
