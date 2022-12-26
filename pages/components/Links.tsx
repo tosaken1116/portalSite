@@ -33,15 +33,14 @@ const Links = ({
                 links.map((link, index) => (
                     <Grid
                         item
-                        direction="row"
+                        // direction="row"
                         key={index}
-                        spacing={1}
                         sx={{
                             height: "80px",
                             width: !isIconMode ? "80px" : "250px",
                             alignSelf: "center",
+                            padding: "40px 0 0 0",
                         }}
-                        pt={3}
                     >
                         <Box sx={{ position: "relative" }}>
                             <Button
