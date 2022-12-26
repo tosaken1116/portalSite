@@ -1,5 +1,5 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import { Button, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import { LinksProps, RemoveModeProps } from "../../type/Type";
 import Icon from "./Icon";
 
@@ -39,20 +39,49 @@ const Links = ({
                         sx={{ alignSelf: "center" }}
                         pt={3}
                     >
-                        <Button
-                            startIcon={<Icon iconName={link.icon} />}
-                            sx={{ color: link.color, fontSize: "20px" }}
-                            href={link.href}
-                        >
-                            {isIconMode && (
-                                <Typography>{link.title}</Typography>
+                        <Box sx={{ position: "relative" }}>
+                            <Button
+                                disabled={isRemoveMode}
+                                startIcon={<Icon iconName={link.icon} />}
+                                sx={{
+                                    color: link.color,
+                                    fontSize: "20px",
+                                    zIndex: "5",
+                                }}
+                                href={link.href}
+                            >
+                                {isIconMode && (
+                                    <Typography>{link.title}</Typography>
+                                )}
+                            </Button>
+                            {isIconMode && isRemoveMode && (
+                                <IconButton
+                                    onClick={() => removeLink(link.href)}
+                                >
+                                    <CancelIcon
+                                        color="error"
+                                        fontSize="small"
+                                    />
+                                </IconButton>
                             )}
-                        </Button>
-                        {isRemoveMode && (
-                            <IconButton onClick={() => removeLink(link.href)}>
-                                <CancelIcon color="error" fontSize="small" />
-                            </IconButton>
-                        )}
+                            {!isIconMode && isRemoveMode && (
+                                <IconButton
+                                    onClick={() => removeLink(link.href)}
+                                    sx={{
+                                        right: "25px",
+                                        top: "-6px",
+                                        width: "3px",
+                                        postition: "absolute",
+                                        zIndex: "10",
+                                    }}
+                                >
+                                    <CancelIcon
+                                        color="error"
+                                        sx={{ fontSize: "20px" }}
+                                    />
+                                </IconButton>
+                            )}
+                        </Box>
                     </Grid>
                 ))}
         </Grid>
