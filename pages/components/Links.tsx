@@ -37,9 +37,11 @@ const Links = ({
                         key={index}
                         spacing={1}
                         sx={{
+                            height: "80px",
+                            width: "80px",
                             alignSelf: "center",
                         }}
-                        pt={2}
+                        pt={3}
                     >
                         <Box sx={{ position: "relative" }}>
                             <Button
@@ -48,7 +50,6 @@ const Links = ({
                                 sx={{
                                     color: link.color,
                                     fontSize: "20px",
-                                    zIndex: "5",
                                 }}
                                 href={link.href}
                             >
@@ -70,11 +71,10 @@ const Links = ({
                                 <IconButton
                                     onClick={() => removeLink(link.href)}
                                     sx={{
-                                        right: "25px",
-                                        top: "-6px",
+                                        right: "-10px",
+                                        top: "-45px",
                                         width: "3px",
                                         postition: "absolute",
-                                        zIndex: "10",
                                     }}
                                 >
                                     <CancelIcon
