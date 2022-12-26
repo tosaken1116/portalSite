@@ -38,7 +38,7 @@ const Links = ({
                         spacing={1}
                         sx={{
                             height: "80px",
-                            width: "80px",
+                            width: !isIconMode ? "80px" : "250px",
                             alignSelf: "center",
                         }}
                         pt={3}
