@@ -88,9 +88,14 @@ export const useGetLocalStorage = (key: string) => {
                 ],
             },
         ];
-        const test = localStorage.getItem(key);
-        console.log(test);
-
-        return test != null ? JSON.parse(test) : initialProps;
+        const userCustomLinks = localStorage.getItem(key);
+        try {
+            if (userCustomLinks != null) {
+                const parsedValue = JSON.parse(userCustomLinks);
+                return parsedValue;
+            }
+        } catch (error) {
+            return initialProps;
+        }
     }
 };

@@ -34,3 +34,11 @@ export type ChangeColorProps = {
     selectedColor: string;
     handleColorChange: (color: any) => void;
 };
+export type RemoveModeProps = {
+    isRemoveMode: boolean;
+    removeLink: (link: string) => void;
+};
+export type EditButtonsProps = {
+    addLink: () => void;
+    removeLink: () => void;
+};

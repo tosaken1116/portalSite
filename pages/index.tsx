@@ -1,10 +1,10 @@
-import AddLinkIcon from "@mui/icons-material/AddLink";
-import { CircularProgress, Grid, IconButton, Stack } from "@mui/material";
+import { CircularProgress, Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useGetLocalStorage } from "../hooks/hooks";
 import { FormDataType, LinksProps } from "../type/Type";
 import AddLinkModal from "./components/AddLinkModal";
+import EditButtons from "./components/EditButtons";
 import LinksWrapper from "./components/Links";
 
 export default function Home() {
@@ -25,8 +25,6 @@ export default function Home() {
                 LinkProp.title +
                 '","links":[' +
                 LinkProp.links.map((link) => {
-                    console.log(link.icon);
-                    console.log(JSON.stringify(link.icon));
                     let linkText =
                         "{" +
                         '"title":"' +
@@ -46,7 +44,19 @@ export default function Home() {
         text += "]";
         return text;
     };
-
+    const removeLink = (removeLink: string) => {
+        const removedLinkProps = LinkProps.concat();
+        removedLinkProps.map((LinkProp) => {
+            LinkProp.links.map((link, index) => {
+                if (link.href == removeLink) {
+                    const removedLinks = LinkProp.links;
+                    removedLinks.splice(index, 1);
+                    return removedLinks;
+                }
+            });
+        });
+        setLinkProps(removedLinkProps);
+    };
     const handleSubmit = (formData: FormDataType) => {
         const addData = LinkProps.concat();
         let foundFlag = false;
@@ -61,12 +71,10 @@ export default function Home() {
                     color: formData.color,
                 });
                 setLinkProps([...addData, addColumn]);
-                console.log("found");
                 foundFlag = true;
             }
         });
         if (!foundFlag) {
-            console.log("not found");
             setLinkProps([
                 ...addData,
                 {
@@ -89,7 +97,7 @@ export default function Home() {
     const saveLocalStorage = () => {
         localStorage.setItem("portalSite", parseDict());
     };
-
+    const [isRemoveMode, setIsRemoveMode] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const localStorageLinks = useGetLocalStorage("portalSite");
     useEffect(() => {
@@ -99,18 +107,15 @@ export default function Home() {
         return <CircularProgress />;
     } else {
         return (
-            <Stack alignItems="center" spacing={1}>
-                <IconButton
-                    onClick={() => setModalIsOpen(true)}
-                    sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: { xs: "24px", sm: "36px" },
-                    }}
-                >
-                    <AddLinkIcon />
-                </IconButton>
+            <Stack
+                alignItems="center"
+                spacing={1}
+                sx={{ position: "relative" }}
+            >
+                <EditButtons
+                    addLink={() => setModalIsOpen(true)}
+                    removeLink={() => setIsRemoveMode(!isRemoveMode)}
+                />
 
                 {modalIsOpen && (
                     <AddLinkModal
@@ -157,6 +162,12 @@ export default function Home() {
                                                                 <LinksWrapper
                                                                     links={
                                                                         links
+                                                                    }
+                                                                    isRemoveMode={
+                                                                        isRemoveMode
+                                                                    }
+                                                                    removeLink={
+                                                                        removeLink
                                                                     }
                                                                     title={
                                                                         title

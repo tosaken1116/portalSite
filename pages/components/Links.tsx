@@ -1,9 +1,15 @@
-import { Button, Stack, Typography } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { Button, IconButton, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import { LinksProps } from "../../type/Type";
+import { LinksProps, RemoveModeProps } from "../../type/Type";
 import Icon from "./Icon";
 
-const Links = ({ links, title }: LinksProps) => {
+const Links = ({
+    links,
+    title,
+    isRemoveMode,
+    removeLink,
+}: LinksProps & RemoveModeProps) => {
     return (
         <Stack
             p={2}
@@ -18,19 +24,41 @@ const Links = ({ links, title }: LinksProps) => {
             <Typography sx={{ fontSize: "20px" }}>{title}</Typography>
             {links &&
                 links.map((link, index) => (
-                    <Stack key={index} spacing={1}>
+                    <Stack
+                        direction="row"
+                        key={index}
+                        spacing={1}
+                        sx={{ alignSelf: "center" }}
+                    >
                         <Button
                             startIcon={<Icon iconName={link.icon} />}
                             sx={{ color: link.color }}
                         >
                             <Link href={link.href}>{link.title}</Link>
                         </Button>
+                        {isRemoveMode && (
+                            <IconButton onClick={() => removeLink(link.href)}>
+                                <CancelIcon color="error" fontSize="small" />
+                            </IconButton>
+                        )}
                     </Stack>
                 ))}
         </Stack>
     );
 };
 
-export default function LinksWrapper({ links, title }: LinksProps) {
-    return <Links links={links} title={title}></Links>;
+export default function LinksWrapper({
+    links,
+    title,
+    isRemoveMode,
+    removeLink,
+}: LinksProps & RemoveModeProps) {
+    return (
+        <Links
+            links={links}
+            title={title}
+            isRemoveMode={isRemoveMode}
+            removeLink={removeLink}
+        ></Links>
+    );
 }
