@@ -25,8 +25,6 @@ export default function Home() {
                 LinkProp.title +
                 '","links":[' +
                 LinkProp.links.map((link) => {
-                    console.log(link.icon);
-                    console.log(JSON.stringify(link.icon));
                     let linkText =
                         "{" +
                         '"title":"' +
@@ -53,7 +51,6 @@ export default function Home() {
                 if (link.href == removeLink) {
                     const removedLinks = LinkProp.links;
                     removedLinks.splice(index, 1);
-                    console.log("remove");
                     return removedLinks;
                 }
             });
@@ -74,12 +71,10 @@ export default function Home() {
                     color: formData.color,
                 });
                 setLinkProps([...addData, addColumn]);
-                console.log("found");
                 foundFlag = true;
             }
         });
         if (!foundFlag) {
-            console.log("not found");
             setLinkProps([
                 ...addData,
                 {
