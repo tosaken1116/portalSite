@@ -1,15 +1,16 @@
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
+import IosShareIcon from "@mui/icons-material/IosShare";
 import LinkOffSharpIcon from "@mui/icons-material/LinkOffSharp";
 import { Box, IconButton, Stack } from "@mui/material";
 import { useState } from "react";
 import { EditButtonsProps } from "../../type/Type";
-
 export default function EditButtons({
     addLink,
     removeLink,
     changeIcomMode,
+    shareLinks,
 }: EditButtonsProps) {
     const [isEditButtonsOpen, setIsEditButtonsOpen] = useState(false);
     return (
@@ -32,6 +33,9 @@ export default function EditButtons({
                     </IconButton>
                     <IconButton onClick={changeIcomMode}>
                         <ChangeCircleOutlinedIcon />
+                    </IconButton>
+                    <IconButton onClick={shareLinks}>
+                        <IosShareIcon />
                     </IconButton>
                 </Stack>
             ) : (

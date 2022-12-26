@@ -6,6 +6,7 @@ import { FormDataType, LinksProps } from "../type/Type";
 import AddLinkModal from "./components/AddLinkModal";
 import EditButtons from "./components/EditButtons";
 import LinksWrapper from "./components/Links";
+import QrCode from "./components/QrCode";
 export default function Home() {
     const arrayMove = (result: any) => {
         const items = [...LinkProps];
@@ -43,6 +44,7 @@ export default function Home() {
         text += "]";
         return text;
     };
+
     const removeLink = (removeLink: string) => {
         const removedLinkProps = LinkProps.concat();
         removedLinkProps.map((LinkProp) => {
@@ -62,6 +64,10 @@ export default function Home() {
         });
         console.log(removedLinkProps);
         setLinkProps(setRemovedLinks);
+    };
+    const onShareLinkClick = () => {
+        setLinkPropsString(parseDict());
+        setIsQrCodeModalOpen(true);
     };
     const handleSubmit = (formData: FormDataType) => {
         const addData = LinkProps.concat();
@@ -100,10 +106,12 @@ export default function Home() {
         saveLocalStorage();
     };
     const [isIconMode, setIsIconMode] = useState(false);
+    const [linkPropsString, setLinkPropsString] = useState("");
     const [LinkProps, setLinkProps] = useState<LinksProps[]>([]);
     const saveLocalStorage = () => {
         localStorage.setItem("portalSite", parseDict());
     };
+    const [isQrCodeModalOpen, setIsQrCodeModalOpen] = useState(false);
     const [isRemoveMode, setIsRemoveMode] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const localStorageLinks = useGetLocalStorage("portalSite");
@@ -123,13 +131,19 @@ export default function Home() {
                     addLink={() => setModalIsOpen(true)}
                     removeLink={() => setIsRemoveMode(!isRemoveMode)}
                     changeIcomMode={() => setIsIconMode(!isIconMode)}
+                    shareLinks={() => onShareLinkClick()}
                 />
-
                 {modalIsOpen && (
                     <AddLinkModal
                         closeModal={() => setModalIsOpen(false)}
                         handleSubmit={handleSubmit}
                     ></AddLinkModal>
+                )}
+                {isQrCodeModalOpen && (
+                    <QrCode
+                        outputString={linkPropsString}
+                        closeQrCodeModal={() => setIsQrCodeModalOpen(false)}
+                    ></QrCode>
                 )}
 
                 <Grid

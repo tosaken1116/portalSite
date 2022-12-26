@@ -43,4 +43,9 @@ export type EditButtonsProps = {
     changeIcomMode: () => void;
     addLink: () => void;
     removeLink: () => void;
+    shareLinks: () => void;
+};
+export type QrCodeProps = {
+    outputString: string;
+    closeQrCodeModal: () => void;
 };
