@@ -1,10 +1,16 @@
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import CancelIcon from "@mui/icons-material/Cancel";
+import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import LinkOffSharpIcon from "@mui/icons-material/LinkOffSharp";
 import { Box, IconButton, Stack } from "@mui/material";
 import { useState } from "react";
 import { EditButtonsProps } from "../../type/Type";
-export default function EditButtons({ addLink, removeLink }: EditButtonsProps) {
+
+export default function EditButtons({
+    addLink,
+    removeLink,
+    changeIcomMode,
+}: EditButtonsProps) {
     const [isEditButtonsOpen, setIsEditButtonsOpen] = useState(false);
     return (
         <Box sx={{ position: "absolute", left: "50px" }}>
@@ -23,6 +29,9 @@ export default function EditButtons({ addLink, removeLink }: EditButtonsProps) {
                     </IconButton>
                     <IconButton onClick={removeLink}>
                         <LinkOffSharpIcon />
+                    </IconButton>
+                    <IconButton onClick={changeIcomMode}>
+                        <ChangeCircleOutlinedIcon />
                     </IconButton>
                 </Stack>
             ) : (

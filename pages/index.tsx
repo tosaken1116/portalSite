@@ -6,7 +6,6 @@ import { FormDataType, LinksProps } from "../type/Type";
 import AddLinkModal from "./components/AddLinkModal";
 import EditButtons from "./components/EditButtons";
 import LinksWrapper from "./components/Links";
-
 export default function Home() {
     const arrayMove = (result: any) => {
         const items = [...LinkProps];
@@ -47,15 +46,22 @@ export default function Home() {
     const removeLink = (removeLink: string) => {
         const removedLinkProps = LinkProps.concat();
         removedLinkProps.map((LinkProp) => {
-            LinkProp.links.map((link, index) => {
+            const addLinkProp = LinkProp.links.map((link, index) => {
                 if (link.href == removeLink) {
                     const removedLinks = LinkProp.links;
                     removedLinks.splice(index, 1);
                     return removedLinks;
                 }
             });
+
+            return addLinkProp;
         });
-        setLinkProps(removedLinkProps);
+        console.log(removedLinkProps);
+        const setRemovedLinks = removedLinkProps.filter((removedLinkProp) => {
+            return removedLinkProp.links.length != 0;
+        });
+        console.log(removedLinkProps);
+        setLinkProps(setRemovedLinks);
     };
     const handleSubmit = (formData: FormDataType) => {
         const addData = LinkProps.concat();
@@ -93,6 +99,7 @@ export default function Home() {
         }
         saveLocalStorage();
     };
+    const [isIconMode, setIsIconMode] = useState(false);
     const [LinkProps, setLinkProps] = useState<LinksProps[]>([]);
     const saveLocalStorage = () => {
         localStorage.setItem("portalSite", parseDict());
@@ -115,6 +122,7 @@ export default function Home() {
                 <EditButtons
                     addLink={() => setModalIsOpen(true)}
                     removeLink={() => setIsRemoveMode(!isRemoveMode)}
+                    changeIcomMode={() => setIsIconMode(!isIconMode)}
                 />
 
                 {modalIsOpen && (
@@ -165,6 +173,9 @@ export default function Home() {
                                                                     }
                                                                     isRemoveMode={
                                                                         isRemoveMode
+                                                                    }
+                                                                    isIconMode={
+                                                                        isIconMode
                                                                     }
                                                                     removeLink={
                                                                         removeLink

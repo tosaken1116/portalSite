@@ -36,9 +36,11 @@ export type ChangeColorProps = {
 };
 export type RemoveModeProps = {
     isRemoveMode: boolean;
+    isIconMode: boolean;
     removeLink: (link: string) => void;
 };
 export type EditButtonsProps = {
+    changeIcomMode: () => void;
     addLink: () => void;
     removeLink: () => void;
 };
