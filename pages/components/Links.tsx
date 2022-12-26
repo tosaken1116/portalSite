@@ -36,8 +36,10 @@ const Links = ({
                         direction="row"
                         key={index}
                         spacing={1}
-                        sx={{ alignSelf: "center" }}
-                        pt={3}
+                        sx={{
+                            alignSelf: "center",
+                        }}
+                        pt={2}
                     >
                         <Box sx={{ position: "relative" }}>
                             <Button
