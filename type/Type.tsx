@@ -36,6 +36,7 @@ export type ChangeColorProps = {
 };
 export type RemoveModeProps = {
     isRemoveMode: boolean;
+    removeLink: (link: string) => void;
 };
 export type EditButtonsProps = {
     addLink: () => void;

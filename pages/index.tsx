@@ -46,7 +46,20 @@ export default function Home() {
         text += "]";
         return text;
     };
-
+    const removeLink = (removeLink: string) => {
+        const removedLinkProps = LinkProps.concat();
+        removedLinkProps.map((LinkProp) => {
+            LinkProp.links.map((link, index) => {
+                if (link.href == removeLink) {
+                    const removedLinks = LinkProp.links;
+                    removedLinks.splice(index, 1);
+                    console.log("remove");
+                    return removedLinks;
+                }
+            });
+        });
+        setLinkProps(removedLinkProps);
+    };
     const handleSubmit = (formData: FormDataType) => {
         const addData = LinkProps.concat();
         let foundFlag = false;
@@ -157,6 +170,9 @@ export default function Home() {
                                                                     }
                                                                     isRemoveMode={
                                                                         isRemoveMode
+                                                                    }
+                                                                    removeLink={() =>
+                                                                        removeLink
                                                                     }
                                                                     title={
                                                                         title

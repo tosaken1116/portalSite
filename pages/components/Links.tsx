@@ -8,6 +8,7 @@ const Links = ({
     links,
     title,
     isRemoveMode,
+    removeLink,
 }: LinksProps & RemoveModeProps) => {
     return (
         <Stack
@@ -36,7 +37,7 @@ const Links = ({
                             <Link href={link.href}>{link.title}</Link>
                         </Button>
                         {isRemoveMode && (
-                            <IconButton>
+                            <IconButton onClick={() => removeLink(link.href)}>
                                 <CancelIcon color="error" fontSize="small" />
                             </IconButton>
                         )}
@@ -50,8 +51,14 @@ export default function LinksWrapper({
     links,
     title,
     isRemoveMode,
+    removeLink,
 }: LinksProps & RemoveModeProps) {
     return (
-        <Links links={links} title={title} isRemoveMode={isRemoveMode}></Links>
+        <Links
+            links={links}
+            title={title}
+            isRemoveMode={isRemoveMode}
+            removeLink={removeLink}
+        ></Links>
     );
 }
