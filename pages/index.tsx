@@ -171,7 +171,7 @@ export default function Home() {
                                                                     isRemoveMode={
                                                                         isRemoveMode
                                                                     }
-                                                                    removeLink={() =>
+                                                                    removeLink={
                                                                         removeLink
                                                                     }
                                                                     title={
