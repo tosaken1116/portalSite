@@ -1,6 +1,5 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import { Button, IconButton, Stack, Typography } from "@mui/material";
-import Link from "next/link";
+import { Button, Grid, IconButton, Typography } from "@mui/material";
 import { LinksProps, RemoveModeProps } from "../../type/Type";
 import Icon from "./Icon";
 
@@ -9,9 +8,11 @@ const Links = ({
     title,
     isRemoveMode,
     removeLink,
+    isIconMode,
 }: LinksProps & RemoveModeProps) => {
     return (
-        <Stack
+        <Grid
+            container={!isIconMode}
             p={2}
             m={2}
             sx={{
@@ -19,31 +20,42 @@ const Links = ({
                 border: "2px solid #aaaaaa",
                 borderRadius: "30px",
                 color: "GrayText",
+                position: "relative",
+                textAlign: "center",
             }}
+            spacing={3}
+            direction={isIconMode ? "column" : "row"}
         >
-            <Typography sx={{ fontSize: "20px" }}>{title}</Typography>
+            <Typography sx={{ fontSize: "20px", position: "absolute" }}>
+                {title}
+            </Typography>
             {links &&
                 links.map((link, index) => (
-                    <Stack
+                    <Grid
+                        item
                         direction="row"
                         key={index}
                         spacing={1}
                         sx={{ alignSelf: "center" }}
+                        pt={3}
                     >
                         <Button
                             startIcon={<Icon iconName={link.icon} />}
-                            sx={{ color: link.color }}
+                            sx={{ color: link.color, fontSize: "20px" }}
+                            href={link.href}
                         >
-                            <Link href={link.href}>{link.title}</Link>
+                            {isIconMode && (
+                                <Typography>{link.title}</Typography>
+                            )}
                         </Button>
                         {isRemoveMode && (
                             <IconButton onClick={() => removeLink(link.href)}>
                                 <CancelIcon color="error" fontSize="small" />
                             </IconButton>
                         )}
-                    </Stack>
+                    </Grid>
                 ))}
-        </Stack>
+        </Grid>
     );
 };
 
@@ -52,6 +64,7 @@ export default function LinksWrapper({
     title,
     isRemoveMode,
     removeLink,
+    isIconMode,
 }: LinksProps & RemoveModeProps) {
     return (
         <Links
@@ -59,6 +72,7 @@ export default function LinksWrapper({
             title={title}
             isRemoveMode={isRemoveMode}
             removeLink={removeLink}
+            isIconMode={isIconMode}
         ></Links>
     );
 }
