@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useGetLocalStorage } from "../hooks/hooks";
@@ -116,102 +116,79 @@ export default function Home() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const localStorageLinks = useGetLocalStorage("portalSite");
     useEffect(() => {
-        setLinkProps(localStorageLinks);
-    }, []);
-    if (LinkProps == undefined) {
-        return <CircularProgress />;
-    } else {
-        return (
-            <Stack
-                alignItems="center"
-                spacing={1}
-                sx={{ position: "relative" }}
-            >
-                <EditButtons
-                    addLink={() => setModalIsOpen(true)}
-                    removeLink={() => setIsRemoveMode(!isRemoveMode)}
-                    changeIcomMode={() => setIsIconMode(!isIconMode)}
-                    shareLinks={() => onShareLinkClick()}
-                />
-                {modalIsOpen && (
-                    <AddLinkModal
-                        closeModal={() => setModalIsOpen(false)}
-                        handleSubmit={handleSubmit}
-                    ></AddLinkModal>
-                )}
-                {isQrCodeModalOpen && (
-                    <QrCode
-                        outputString={linkPropsString}
-                        closeQrCodeModal={() => setIsQrCodeModalOpen(false)}
-                    ></QrCode>
-                )}
+        if (localStorageLinks != undefined && localStorage) {
+            setLinkProps(localStorageLinks);
+        }
+    }, [localStorageLinks]);
+    console.log(LinkProps);
+    return (
+        <Stack alignItems="center" spacing={1} sx={{ position: "relative" }}>
+            <EditButtons
+                addLink={() => setModalIsOpen(true)}
+                removeLink={() => setIsRemoveMode(!isRemoveMode)}
+                changeIcomMode={() => setIsIconMode(!isIconMode)}
+                shareLinks={() => onShareLinkClick()}
+            />
+            {modalIsOpen && (
+                <AddLinkModal
+                    closeModal={() => setModalIsOpen(false)}
+                    handleSubmit={handleSubmit}
+                ></AddLinkModal>
+            )}
+            {isQrCodeModalOpen && (
+                <QrCode
+                    outputString={linkPropsString}
+                    closeQrCodeModal={() => setIsQrCodeModalOpen(false)}
+                ></QrCode>
+            )}
 
-                <Grid
-                    alignItems="center"
-                    justifyContent="center"
-                    container
-                    p={3}
-                >
-                    <DragDropContext onDragEnd={arrayMove}>
-                        <Droppable droppableId="droppableId">
-                            {(provided) => (
-                                <div
-                                    {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                >
-                                    {LinkProps.map(
-                                        ({ title, links }, index) => {
-                                            return (
-                                                <Draggable
-                                                    key={title}
-                                                    draggableId={title}
-                                                    index={index}
-                                                >
-                                                    {(provided) => (
-                                                        <Grid
-                                                            item
-                                                            xs={2}
-                                                            sm={4}
-                                                            md={4}
-                                                        >
-                                                            <Stack
-                                                                ref={
-                                                                    provided.innerRef
-                                                                }
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                            >
-                                                                <LinksWrapper
-                                                                    links={
-                                                                        links
-                                                                    }
-                                                                    isRemoveMode={
-                                                                        isRemoveMode
-                                                                    }
-                                                                    isIconMode={
-                                                                        isIconMode
-                                                                    }
-                                                                    removeLink={
-                                                                        removeLink
-                                                                    }
-                                                                    title={
-                                                                        title
-                                                                    }
-                                                                ></LinksWrapper>
-                                                            </Stack>
-                                                        </Grid>
-                                                    )}
-                                                </Draggable>
-                                            );
-                                        }
-                                    )}
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                </Grid>
-            </Stack>
-        );
-    }
+            <Grid alignItems="center" justifyContent="center" container p={3}>
+                <DragDropContext onDragEnd={arrayMove}>
+                    <Droppable droppableId="droppableId">
+                        {(provided) => (
+                            <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                            >
+                                {LinkProps.map(({ title, links }, index) => {
+                                    return (
+                                        <Draggable
+                                            key={title}
+                                            draggableId={title}
+                                            index={index}
+                                        >
+                                            {(provided) => (
+                                                <Grid item xs={2} sm={4} md={4}>
+                                                    <Stack
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        <LinksWrapper
+                                                            links={links}
+                                                            isRemoveMode={
+                                                                isRemoveMode
+                                                            }
+                                                            isIconMode={
+                                                                isIconMode
+                                                            }
+                                                            removeLink={
+                                                                removeLink
+                                                            }
+                                                            title={title}
+                                                        ></LinksWrapper>
+                                                    </Stack>
+                                                </Grid>
+                                            )}
+                                        </Draggable>
+                                    );
+                                })}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </Grid>
+        </Stack>
+    );
 }
