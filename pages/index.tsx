@@ -118,6 +118,7 @@ export default function Home() {
     useEffect(() => {
         setLinkProps(localStorageLinks);
     }, [localStorageLinks]);
+    console.log(LinkProps);
     if (LinkProps == undefined) {
         return <CircularProgress />;
     } else {
