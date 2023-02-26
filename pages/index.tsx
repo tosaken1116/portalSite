@@ -117,7 +117,7 @@ export default function Home() {
     const localStorageLinks = useGetLocalStorage("portalSite");
     useEffect(() => {
         setLinkProps(localStorageLinks);
-    }, []);
+    }, [localStorageLinks]);
     if (LinkProps == undefined) {
         return <CircularProgress />;
     } else {
