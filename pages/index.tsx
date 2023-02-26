@@ -116,7 +116,9 @@ export default function Home() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const localStorageLinks = useGetLocalStorage("portalSite");
     useEffect(() => {
-        setLinkProps(localStorageLinks);
+        if (localStorageLinks != undefined && localStorage) {
+            setLinkProps(localStorageLinks);
+        }
     }, [localStorageLinks]);
     console.log(LinkProps);
     return (
