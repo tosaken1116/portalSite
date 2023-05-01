@@ -1,7 +1,7 @@
 import { CircularProgress, Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useGetLocalStorage } from "../hooks/hooks";
+import { getLocalStorage } from "../hooks/hooks";
 import { FormDataType, LinksProps } from "../type/Type";
 import AddLinkModal from "./components/AddLinkModal";
 import EditButtons from "./components/EditButtons";
@@ -99,11 +99,11 @@ export default function Home() {
     };
     const [isRemoveMode, setIsRemoveMode] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const localStorageLinks = useGetLocalStorage("portalSite");
     useEffect(() => {
+        const localStorageLinks = getLocalStorage("portalSite");
         setLinkProps(localStorageLinks);
     }, []);
-    if (LinkProps == undefined) {
+    if (LinkProps.length == 0) {
         return <CircularProgress />;
     } else {
         return (

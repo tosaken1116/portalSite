@@ -1,4 +1,4 @@
-export const useGetLocalStorage = (key: string) => {
+export const getLocalStorage = (key: string) => {
     if (typeof window !== "undefined") {
         const initialProps = [
             {
@@ -92,7 +92,10 @@ export const useGetLocalStorage = (key: string) => {
         try {
             if (userCustomLinks != null) {
                 const parsedValue = JSON.parse(userCustomLinks);
+
                 return parsedValue;
+            } else {
+                return initialProps;
             }
         } catch (error) {
             return initialProps;
